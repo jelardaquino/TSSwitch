@@ -2,9 +2,6 @@
 
 **Isoform Switching and Differential Transcript Usage Analysis in Alzheimer's Disease**
 
-[![R](https://img.shields.io/badge/R-%3E%3D4.2-blue.svg)](https://www.r-project.org/)
-[![Bioconductor](https://img.shields.io/badge/Bioconductor-%3E%3D3.16-green.svg)](https://bioconductor.org/)
-
 ---
 
 ## Overview

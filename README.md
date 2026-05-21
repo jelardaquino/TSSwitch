@@ -1,12 +1,12 @@
 # TSSwitch
 
-**Isoform Switching and Differential Transcript Usage Analysis in Alzheimer's Disease**
+**Transcriptomic Splicing Switch**
 
 ---
 
 ## Overview
 
-TSSwitch (Transcriptomic Splicing Switch) is a bioinformatics analysis pipeline designed to investigate transcriptomic dysregulation and alternative splicing alterations in Alzheimer’s Disease (AD) using both short-read (Illumina) and long-read (Oxford Nanopore Technologies, ONT) RNA sequencing data from human (Homo sapiens, GRCh38) brain samples.
+TSSwitch is a bioinformatics analysis pipeline designed to investigate transcriptomic dysregulation and alternative splicing alterations in Alzheimer’s Disease (AD) using both short-read (Illumina) and long-read (Oxford Nanopore Technologies, ONT) RNA sequencing data from human (Homo sapiens, GRCh38) brain samples.
 
 The pipeline integrates multiple complementary analyses to characterize changes in RNA processing and transcript regulation between AD and healthy control (CT) samples, including:
 

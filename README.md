@@ -238,34 +238,6 @@ The Salmon index for short-read quantification was built against Ensembl GRCh38 
 
 ---
 
-## Conventions
-
-- **Groups:** `CT` = Control (reference), `AD` = Alzheimer's Disease
-- **Column names:** `TXNAME`, `GENEID`, `gene_symbol`, `isoform_id`, `sampleID`, `condition`
-- **Checkpoints:** Intermediate RDS files are saved between pipeline stages to avoid re-running long steps
-- **Figures:** All figures are saved as PNG at 300 DPI using `ggsave()` or `png()`/`dev.off()`
-
----
-
-## Citation
-
-If you use this pipeline in your research, please cite the key underlying tools:
-
-- **IsoformSwitchAnalyzeR:** Vitting-Seerup & Sandelin (2019). *Bioinformatics*. [doi:10.1093/bioinformatics/btz247](https://doi.org/10.1093/bioinformatics/btz247)
-- **satuRn:** Gilis et al. (2021). *F1000Research*. [doi:10.12688/f1000research.54537.2](https://doi.org/10.12688/f1000research.54537.2)
-- **DEXSeq:** Anders et al. (2012). *Genome Research*. [doi:10.1101/gr.133744.111](https://doi.org/10.1101/gr.133744.111)
-- **Bambu:** Chen et al. (2023). *Nature Methods*. [doi:10.1038/s41592-023-01908-w](https://doi.org/10.1038/s41592-023-01908-w)
-- **Salmon:** Patro et al. (2017). *Nature Methods*. [doi:10.1038/nmeth.4197](https://doi.org/10.1038/nmeth.4197)
-- **SUPPA2:** Trincado et al. (2018). *Genome Biology*. [doi:10.1186/s13059-018-1417-2](https://doi.org/10.1186/s13059-018-1417-2)
-
----
-
-## License
-
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
-
----
-
 ## Contributing
 
 Contributions, bug reports, and suggestions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.

@@ -45,6 +45,9 @@ TSSwitch/
 │   ├── generate_all_significant_switch_plots_ORF_annotated.R  # Batch switch plot generation
 │   ├── custom_switch_plot_helpers.R # Reusable ggplot2 helper functions for switch plots
 │   ├── promoter_usage_analysis.r    # Differential promoter usage with beta regression
+│   ├── suppa_generate_events_sr.sh  # SUPPA2 event generation and PSI calculation (short-read)
+│   ├── beta_regression_psi.r        # Beta regression on PSI values for differential splicing
+│   ├── go_kegg_enrichment.r         # GO (BP) and KEGG pathway enrichment on significant events
 │   └── circos_heatmap_atac_plots.r  # Circos plots, heatmaps, and PWMEnrich motif analysis
 │
 └── syn52047893/                # Long-read Oxford Nanopore RNA-seq pipeline (Synapse dataset)
@@ -178,6 +181,19 @@ Rscript promoter_usage_analysis.r
 Rscript circos_heatmap_atac_plots.r
 ```
 
+```bash
+# 9. SUPPA2 event generation and PSI calculation
+bash suppa_generate_events_sr.sh
+```
+
+```r
+# 10. Beta regression on PSI values for differential splicing
+Rscript beta_regression_psi.r
+
+# 11. GO and KEGG pathway enrichment on significant splicing events
+Rscript go_kegg_enrichment.r
+```
+
 ### Long-Read Pipeline (`syn52047893/`)
 
 ```r
@@ -241,8 +257,11 @@ The Salmon index for short-read quantification was built against Ensembl GRCh38 
 | `IsoformSwitchAnalyzeR_top_switches.tsv` | Table of top significant isoform switches |
 | `transcript_tpm.txt` / `bambu_tx_tpm.txt` | Transcript-level TPM matrices |
 | `promoter_usage_betareg_results.tsv` | Beta regression results for differential promoter usage |
-| `suppa_beta_regression_all_results.tsv` | Beta regression results for SUPPA2 PSI events |
-| `gprofiler_results.tsv` | GO enrichment results table |
+| `suppa_beta_regression_significant_results.tsv` | Significant SUPPA2 events (p_adj ≤ 0.05, \|ΔPSI\| ≥ 0.2) |
+| `suppa_beta_regression_significant_results_ADgenes.tsv` | Significant events filtered to known AD risk genes |
+| `matching_long_read_sig_events.txt` | Events significant in both short-read and long-read datasets |
+| `suppa_beta_regression_analysis.RData` | Workspace checkpoint linking PSI results to enrichment step |
+| `gprofiler_results.tsv` | GO enrichment results table (long-read pipeline) |
 | `figures/` | All publication-quality PNG figures (300 DPI) |
 
 ---

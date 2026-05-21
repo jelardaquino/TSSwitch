@@ -2,7 +2,6 @@
 
 **Isoform Switching and Differential Transcript Usage Analysis in Alzheimer's Disease**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![R](https://img.shields.io/badge/R-%3E%3D4.2-blue.svg)](https://www.r-project.org/)
 [![Bioconductor](https://img.shields.io/badge/Bioconductor-%3E%3D3.16-green.svg)](https://bioconductor.org/)
 
@@ -10,12 +9,25 @@
 
 ## Overview
 
-TSSwitch is a bioinformatics analysis pipeline for studying **transcript isoform switching** and **differential transcript usage (DTU)** in Alzheimer's Disease (AD) versus healthy Controls (CT) using human (*Homo sapiens*, GRCh38) RNA-seq data. The pipeline integrates both **short-read** (Illumina) and **long-read** (Oxford Nanopore) RNA-seq datasets to provide a comprehensive view of alternative splicing changes in AD.
+TSSwitch (Transcriptomic Splicing Switch) is a bioinformatics analysis pipeline designed to investigate transcriptomic dysregulation and alternative splicing alterations in Alzheimer’s Disease (AD) using both short-read (Illumina) and long-read (Oxford Nanopore Technologies, ONT) RNA sequencing data from human (Homo sapiens, GRCh38) brain samples.
+
+The pipeline integrates multiple complementary analyses to characterize changes in RNA processing and transcript regulation between AD and healthy control (CT) samples, including:
+
+Differential transcript usage (DTU)
+Isoform switching analysis
+Event-level alternative splicing detection
+Differential promoter/transcription start site usage
+Transcription factor (TF) and motif enrichment
+Cross-platform transcriptomic comparisons between short- and long-read sequencing technologies
+
+The name TSSwitch reflects the central theme of the project: identifying transcriptomic and splicing “switches” associated with Alzheimer’s disease pathology. By combining long-read transcript reconstruction with short-read statistical frameworks, TSSwitch enables the discovery of both known and novel transcript isoforms, promoter shifts, and splicing events that may contribute to neurodegeneration and transcriptional reprogramming in AD.
+
+This pipeline provides a unified framework for studying isoform diversity, transcript regulation, and alternative splicing dynamics across sequencing platforms.
 
 Key analyses include:
-- DTU testing with [IsoformSwitchAnalyzeR](https://bioconductor.org/packages/release/bioc/html/IsoformSwitchAnalyzeR.html) (satuRn and DEXSeq backends)
-- ORF and coding potential analysis (CPAT, CPC2)
+- DTU testing with [IsoformSwitchAnalyzeR](https://bioconductor.org/packages/release/bioc/html/IsoformSwitchAnalyzeR.html)
 - Alternative splicing event quantification (SUPPA2)
+- Differential splicing analysis (beta regression)
 - Differential promoter usage (beta regression)
 - Motif enrichment at switching promoters (PWMEnrich)
 - GO/pathway enrichment (g:Profiler2, clusterProfiler)
@@ -61,10 +73,10 @@ TSSwitch/
 
 | Folder | Accession | Description | Sequencing | Samples |
 |---|---|---|---|---|
-| `PRJNA1206164/` | [PRJNA1206164](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1206164) | Short-read RNA-seq (public, NCBI SRA) | Illumina paired-end | AD vs. CT |
+| `PRJNA1206164/` | [PRJNA1206164](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1206164) | Short-read RNA-seq (public, NCBI SRA) | Illumina paired-end | 7 AD vs. 8 CT |
 | `syn52047893/` | [syn52065646](https://www.synapse.org/#!Synapse:syn52065646) | Long-read RNA-seq (AD Knowledge Portal, controlled access) | Oxford Nanopore | 6 AD, 6 CT |
 
-> ⚠️ **Data Access:** The long-read dataset (`syn52047893`) requires an approved Synapse account and data use agreement through the [AD Knowledge Portal](https://adknowledgeportal.synapse.org/). Raw data files are **not** included in this repository.
+> ⚠️ **Data Access:** The long-read dataset (`syn52047893`) requires an approved Synapse account and data use agreement through the [AD Knowledge Portal](https://adknowledgeportal.synapse.org/). But you can also access it at the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra) under SRP456327. Raw data files are **not** included in this repository.
 
 ---
 
@@ -96,8 +108,8 @@ TSSwitch/
 # Bioconductor
 BiocManager::install(c(
   "IsoformSwitchAnalyzeR",  # Core DTU analysis framework
-  "DEXSeq",                 # DTU statistical test (long-read)
-  "satuRn",                 # DTU statistical test (short-read)
+  "DEXSeq",                 # DTU statistical test (used in long-read)
+  "satuRn",                 # DTU statistical test (used in short-read)
   "bambu",                  # Long-read quantification
   "tximport",               # Salmon output import
   "GenomicRanges",          # Genomic interval operations
@@ -235,12 +247,6 @@ The Salmon index for short-read quantification was built against Ensembl GRCh38 
 | `suppa_beta_regression_all_results.tsv` | Beta regression results for SUPPA2 PSI events |
 | `gprofiler_results.tsv` | GO enrichment results table |
 | `figures/` | All publication-quality PNG figures (300 DPI) |
-
----
-
-## Contributing
-
-Contributions, bug reports, and suggestions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ---
 

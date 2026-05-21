@@ -28,7 +28,7 @@ Key analyses include:
 - Differential promoter usage (beta regression)
 - Motif enrichment at switching promoters (PWMEnrich)
 - GO/pathway enrichment (g:Profiler2, clusterProfiler)
-- Publication-quality visualization (volcano plots, switch plots, PCA, circos/heatmaps)
+- Visualization (volcano plots, switch plots, PCA, circos/heatmaps)
 
 ---
 
@@ -74,7 +74,7 @@ TSSwitch/
 | Folder | Accession | Description | Sequencing | Samples |
 |---|---|---|---|---|
 | `PRJNA1206164/` | [PRJNA1206164](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1206164) | Short-read RNA-seq (public, NCBI SRA) | Illumina paired-end | 7 AD vs. 8 CT |
-| `syn52047893/` | [syn52065646](https://www.synapse.org/#!Synapse:syn52065646) | Long-read RNA-seq (AD Knowledge Portal, controlled access) | Oxford Nanopore | 6 AD, 6 CT |
+| `syn52047893/` | [syn52065646](https://www.synapse.org/#!Synapse:syn52065646) | Long-read RNA-seq (AD Knowledge Portal) | Oxford Nanopore | 6 AD, 6 CT |
 
 > ⚠️ **Data Access:** The long-read dataset (`syn52047893`) requires an approved Synapse account and data use agreement through the [AD Knowledge Portal](https://adknowledgeportal.synapse.org/). But you can also access it at the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra) under SRP456327. Raw data files are **not** included in this repository.
 
@@ -86,22 +86,8 @@ TSSwitch/
 - Linux or macOS
 - R ≥ 4.2
 - Bioconductor ≥ 3.16
-- Python ≥ 3.8 (for SUPPA2)
+- Python ≥ 3.8
 - [GNU Parallel](https://www.gnu.org/software/parallel/) (for shell scripts)
-
-### Short-Read Pipeline Tools
-| Tool | Version | Purpose |
-|---|---|---|
-| [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) | ≥ 0.11 | Raw read QC |
-| [Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic) | ≥ 0.39 | Adapter trimming |
-| [Salmon](https://combine-lab.github.io/salmon/) | ≥ 1.9 | Transcript quantification |
-
-### Long-Read Pipeline Tools
-| Tool | Version | Purpose |
-|---|---|---|
-| [Minimap2](https://github.com/lh3/minimap2) | ≥ 2.24 | Long-read alignment |
-| [Bambu](https://github.com/GoekeLab/bambu) (R) | ≥ 3.0 | Transcript discovery and quantification |
-| [SUPPA2](https://github.com/comprna/SUPPA) | ≥ 2.3 | Alternative splicing event quantification |
 
 ### R Packages
 ```r

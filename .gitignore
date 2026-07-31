@@ -99,6 +99,13 @@ desktop.ini
 !.vscode/settings.json
 !.vscode/extensions.json
 
+# ── Retired / hidden analyses ──────────────────────────────────────────────────
+# PRJNA1206164 (whole-genome-wide short-read DTU/beta-regression pipeline) has
+# been superseded by the ERP161086 independent short-read concordance analysis
+# and the targeted 86-gene splicing analysis in syn52047893/. The folder is kept
+# locally for reference but is intentionally excluded from version control.
+PRJNA1206164/
+
 # JetBrains / RStudio
 .Rproj.user/
 *.Rproj

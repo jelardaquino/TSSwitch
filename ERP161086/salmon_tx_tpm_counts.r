@@ -6,7 +6,7 @@
 #
 # Inputs  : - SRR_Acc_List.txt          : SRA run accession list
 #           - salmon/<sample>_quant/    : Salmon quant.sf output directories
-#           - metadata_AD_CTR.txt       : Sample metadata (Run, diagnosis, sex)
+#           - metadata_AD_CTR.txt       : Sample metadata (Run, condition)
 #
 # Outputs : - transcript_tpm.txt        : Transcript-level TPM matrix
 #           - PCA_TPM_Transcript_Counts.png : PCA plot colored by condition
@@ -24,9 +24,9 @@ library(matrixStats)
 
 # ── Path configuration ────────────────────────────────────────────────────────
 # ⚠️ Update these paths to match your local environment before running.
-BASE_DIR    <- "/home/AD.UNLV.EDU/Shared_Data/AlternativeSplicing/PRJNA1206164"
+BASE_DIR    <- "/home/AD.UNLV.EDU/Shared_Data/AlternativeSplicing/ERP161086"
 SALMON_DIR  <- file.path(BASE_DIR, "salmon")
-OUTPUT_DIR  <- BASE_DIR
+OUTPUT_DIR  <- file.path(BASE_DIR, "results")
 
 dir.create(OUTPUT_DIR, showWarnings = FALSE, recursive = TRUE)
 
@@ -54,7 +54,7 @@ tpm_matrix <- txi$abundance  # rows = transcripts, cols = samples
 
 # ── Load metadata and align sample order ─────────────────────────────────────
 metadata <- read.table(
-  file.path(BASE_DIR, "metadata_AD_CTR.txt"),
+  file.path(BASE_DIR, "metadata.txt"),
   header = TRUE,
   sep = "\t",
   stringsAsFactors = FALSE
@@ -63,8 +63,7 @@ rownames(metadata) <- metadata$Run
 
 sample_info <- data.frame(
   sampleID  = metadata$Run,
-  group     = metadata$diagnosis,
-  sex       = factor(metadata$sex),
+  group     = metadata$condition,
   stringsAsFactors = FALSE
 )
 
@@ -99,10 +98,8 @@ pca_result <- prcomp(tpm_transposed, center = TRUE, scale. = TRUE)
 # Step 5: Build data frame of PC coordinates with group labels
 pca_df <- as.data.frame(pca_result$x)
 pca_df$sample <- rownames(pca_df)
-pca_df$group  <- metadata$diagnosis[match(pca_df$sample, metadata$Run)]
+pca_df$group  <- metadata$condition[match(pca_df$sample, metadata$Run)]
 
-# Harmonize group label: rename "CTR" -> "CT" for consistency with pipeline conventions
-pca_df$group <- ifelse(pca_df$group == "CTR", "CT", pca_df$group)
 
 # Calculate % variance explained per PC
 var_explained <- round(100 * (pca_result$sdev^2 / sum(pca_result$sdev^2)), 1)
@@ -113,7 +110,7 @@ pca_plot <- ggplot(pca_df, aes(x = PC1, y = PC2, color = group)) +
   xlab(paste0("PC1 (", var_explained[1], "% variance)")) +
   ylab(paste0("PC2 (", var_explained[2], "% variance)")) +
   theme_bw(base_size = 14) +
-  ggtitle("PCA of TPM Transcript Counts — PRJNA1206164")
+  ggtitle("PCA of TPM Transcript Counts — ERP161086")
 
 ggsave(
   filename = file.path(OUTPUT_DIR, "PCA_TPM_Transcript_Counts.png"),

@@ -124,7 +124,7 @@ This replaces the previous whole-genome-wide beta regression on all detected SUP
 - Linux or macOS
 - R ≥ 4.2
 - Bioconductor ≥ 3.16
-- Python ≥ 3.8 (for SUPPA2)
+- Python ≥ 3.8
 - [GNU Parallel](https://www.gnu.org/software/parallel/) (for shell scripts)
 
 ### Short-Read Concordance Pipeline Tools (`ERP161086/`)

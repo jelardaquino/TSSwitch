@@ -29,8 +29,6 @@ Key analyses include:
 - Independent short-read concordance analysis of AD-vs-CT effect sizes for the significant DIU gene set
 - Publication-quality visualization (volcano plots, switch plots, PCA, circos/heatmaps)
 
-> ℹ️ **Note on scope:** An earlier whole-genome-wide short-read DTU/beta-regression pipeline (`PRJNA1206164`) has been retired from this repository. It has been superseded by (1) a **targeted** splicing analysis restricted to the 86 genes with significant differential isoform usage (DIU) in the long-read dataset, and (2) an **independent short-read concordance analysis** (`ERP161086`) that validates AD-vs-CT effect sizes for that same significant gene set. The `PRJNA1206164` folder is excluded via `.gitignore` and is no longer tracked in version control.
-
 ---
 
 ## Repository Structure

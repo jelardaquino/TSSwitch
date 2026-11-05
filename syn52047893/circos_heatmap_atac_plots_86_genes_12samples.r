@@ -1,4 +1,7 @@
 # long distance Motif Enrichment (2kb upstream) with PWMEnrich for AD promoter switching analysis
+# Corrected TPM version of jaquino_analysis_v2/scripts/tmp/circos_heatmap_atac_plots_86_genes_12samples.r
+# (manuscript Figure 3D/3E and Supplementary Figure 3). Reads the manuscript TPM promoter results.
+# Only change: promoters with logitFC > 0 (increased usage in AD) are labelled "Up in AD".
 library(data.table)
 library(GenomicRanges)
 library(GenomicFeatures)
@@ -6,13 +9,14 @@ library(rtracklayer)
 library(dplyr)
 library(BSgenome.Hsapiens.UCSC.hg38)
 library(PWMEnrich)
+registerCoresPWMEnrich(20)
 library(PWMEnrich.Hsapiens.background)
 library(ggplot2)
 
-output_dir_tables <- "/home/AD.UNLV.EDU/Shared_Data/AlternativeSplicing/syn52065646_LongRead/jaquino_analysis_v2/tables/promoter_usage_86_genes_12samples/"
-output_dir_figures <- "/home/AD.UNLV.EDU/Shared_Data/AlternativeSplicing/syn52065646_LongRead/jaquino_analysis_v2/figures/promoter_usage_86_genes_12samples/"
+output_dir_tables <- "/home/AD.UNLV.EDU/Shared_Data/AlternativeSplicing/syn52065646_LongRead/jaquino_analysis/corrected_figures_tpm/tables/"
+output_dir_figures <- "/home/AD.UNLV.EDU/Shared_Data/AlternativeSplicing/syn52065646_LongRead/jaquino_analysis/corrected_figures_tpm/figures/"
 # promoter switching table 
-prom_dt <- read.table(paste0(output_dir_tables, "promoter_usage_betareg_results_9samples.tsv"), header = TRUE, sep = "\t")
+prom_dt <- read.table("/home/AD.UNLV.EDU/Shared_Data/AlternativeSplicing/syn52065646_LongRead/jaquino_analysis_v2/tables/promoter_usage_86_genes_12samples/promoter_usage_betareg_results_9samples.tsv", header = TRUE, sep = "\t")
 # split promoter_id into seqnames/start/end/strand (e.g., 19:18587685-18588785(+))
 # handle promoter_id entries with strand "*" as well as "+" / "-"
     sig <- prom_dt %>%
@@ -124,6 +128,7 @@ res_down_sum <- groupReport(res_down)
 
 write.csv(as.data.frame(res_up_sum),   paste0(output_dir_tables, "motif_enrichment_promoters_up_AD_2kbps_v4.csv"),   row.names = FALSE)
 write.csv(as.data.frame(res_down_sum), paste0(output_dir_tables, "motif_enrichment_promoters_down_AD_2kbps_v4.csv"), row.names = FALSE)
+write.table(rbind(transform(subset(as.data.frame(res_up_sum), p.value <= 0.05), direction = "Up in AD"), transform(subset(as.data.frame(res_down_sum), p.value <= 0.05), direction = "Down in AD")), paste0(output_dir_tables, "motif_enrichment_promoters_sig_AD_2kbps.tsv"), sep = "\t", row.names = FALSE, quote = FALSE)
 
 df_up   <- as.data.frame(res_up_sum)
 df_down <- as.data.frame(res_down_sum)
@@ -139,12 +144,12 @@ topN <- 20
 df_up <- as.data.frame(res_up_sum) %>%
   arrange(p.value) %>%
   slice_head(n = topN) %>%
-  mutate(direction = "Down in AD")
+  mutate(direction = "Up in AD")
 
 df_down <- as.data.frame(res_down_sum) %>%
   arrange(p.value) %>%
   slice_head(n = topN) %>%
-  mutate(direction = "Up in AD")
+  mutate(direction = "Down in AD")
 
 df_motifs <- bind_rows(df_up, df_down)
 
@@ -194,7 +199,7 @@ library(dplyr)
 motifs_all <- MotifDb
 motifs_hs_all <- motifs_all[grepl("^Hsapiens-", names(motifs_all))]
 
-ad_tfs <- readLines("/home/AD.UNLV.EDU/Shared_Data/AlternativeSplicing/syn25671149/jaquino_analysis/tmp/promoter_usage_61_genes/AD_TFs.txt")
+ad_tfs <- readLines("/home/AD.UNLV.EDU/Shared_Data/AlternativeSplicing/syn25671149_FreshMicro/jaquino_analysis/tmp/promoter_usage_61_genes/AD_TFs.txt")
 # keep motifs whose name contains any of your TFs
 ad_pat <- paste0("\\b(", paste(ad_tfs, collapse="|"), ")\\b")
 motifs_ad <- motifs_all[grepl(ad_pat, names(motifs_all), ignore.case = TRUE)]
@@ -331,8 +336,8 @@ extract_tf_symbol <- function(x) {
 
 # Define significant motifs from enrichment summaries
 sig_motif_tbl <- bind_rows(
-  as.data.frame(res_up_sum) %>% mutate(direction = "Down in AD"),
-  as.data.frame(res_down_sum) %>% mutate(direction = "Up in AD")
+  as.data.frame(res_up_sum) %>% mutate(direction = "Up in AD"),
+  as.data.frame(res_down_sum) %>% mutate(direction = "Down in AD")
 ) %>%
   filter(!is.na(p.value), p.value <= 0.05)
 
@@ -573,7 +578,7 @@ if (length(sig_motif_names) == 0) {
   motif_dist_up <- build_motif_distance_df(
     seqs = seqs_up,
     prom_win = prom_up_win,
-    direction_label = "Down in AD",
+    direction_label = "Up in AD",
     motif_names = sig_motif_names,
     min_score = "85%"
   )
@@ -581,7 +586,7 @@ if (length(sig_motif_names) == 0) {
   motif_dist_down <- build_motif_distance_df(
     seqs = seqs_down,
     prom_win = prom_down_win,
-    direction_label = "Up in AD",
+    direction_label = "Down in AD",
     motif_names = sig_motif_names,
     min_score = "85%"
   )
@@ -649,7 +654,7 @@ if (length(sig_motif_names) == 0) {
     motif_dist_up_top10 <- build_motif_distance_df_with_lookup(
       seqs = seqs_up,
       prom_win = prom_up_win,
-      direction_label = "Down in AD",
+      direction_label = "Up in AD",
       motif_names = top10_hs_motif_names,
       pwm_lookup_local = pwm_lookup_top10,
       min_score = "85%"
@@ -658,7 +663,7 @@ if (length(sig_motif_names) == 0) {
     motif_dist_down_top10 <- build_motif_distance_df_with_lookup(
       seqs = seqs_down,
       prom_win = prom_down_win,
-      direction_label = "Up in AD",
+      direction_label = "Down in AD",
       motif_names = top10_hs_motif_names,
       pwm_lookup_local = pwm_lookup_top10,
       min_score = "85%"
@@ -699,8 +704,8 @@ mat_to_edges <- function(score_mat, prom_gr, direction_label, score_thresh = 6) 
     mutate(TF = toupper(gsub("[\\._ ].*$", "", motif_name))) %>%
     select(TF, promoter_id, score, direction, motif_name)
 }
-edges_up   <- mat_to_edges(score_mat_up_dense,   prom_up_win,   "Down in AD", score_thresh = 6)
-edges_down <- mat_to_edges(score_mat_down_dense, prom_down_win, "Up in AD",   score_thresh = 6)
+edges_up   <- mat_to_edges(score_mat_up_dense,   prom_up_win,   "Up in AD", score_thresh = 6)
+edges_down <- mat_to_edges(score_mat_down_dense, prom_down_win, "Down in AD",   score_thresh = 6)
 edges <- bind_rows(edges_up, edges_down)
 head(edges)
 
@@ -995,7 +1000,7 @@ ggsave(
 library(GenomicRanges)
 library(stringr)
 
-DAC_peaks <- read.csv("/home/AD.UNLV.EDU/Shared_Data/AlternativeSplicing/syn25671149/jaquino_analysis/tmp/promoter_usage_61_genes/Differential_ATAC.csv", header=TRUE)
+DAC_peaks <- read.csv("/home/AD.UNLV.EDU/Shared_Data/AlternativeSplicing/syn25671149_FreshMicro/jaquino_analysis/tmp/promoter_usage_61_genes/Differential_ATAC.csv", header=TRUE)
 
 dac_gr <- GRanges(
   seqnames = sub(":.*", "", DAC_peaks$Peak),
